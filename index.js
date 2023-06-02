@@ -1,47 +1,57 @@
-// Variáveis
-var nome = document.querySelector("#exampleInputName");
-
-nome.value = "Vanessa da Silva Maia";
-nome.style.color = "red";
-
-// Variáveis e seletores
-var name = document.querySelector("#exampleInputName");
-var gender = document.querySelector("#exampleInputGenderM");  // Só precisamos saber do gender que está selecionado
-var gender = document.querySelector("#exampleInputGenderF");
-var birth = document.querySelector("#exampleInputBirth");
-var country = document.querySelector("#exampleInputCountry");
-var email = document.querySelector("#exampleInputEmail");
-var password = document.querySelector("#exampleInputPassword");
-var photo = document.querySelector("#exampleInputFile");
-var admin = document.querySelector("#exampleInputAdmin");
-// Só precisamos saber do gender que está selecionado:
-document.querySelector("#form-user-create");
-document.querySelector("#form-user-create[name-gender]");
-document.querySelectorAll("#form-user-create[name-gender]");
-document.querySelectorAll("#form-user-create[name-gender]:checked"); // Código final do gender com checked
-
-// For Each - Laço que percorre o array para que cada item execute uma ação
 var fields = document.querySelectorAll("#form-user-create [name]");
+var user = {};
 
-fields.forEach(function(field, index) {
+function addLine(dataUser) {
 
-    if (field.name == "gender") {
+    console.log(dataUser);
 
-        if (field.checked) {
+    document.getElementById("table-users").innerHTML = `
+        <tr>
+            <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+            <td>${dataUser.name}</td>
+            <td>${dataUser.email}</td>
+            <td>${dataUser.admin}</td>
+            <td>${dataUser.birth}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+                <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+            </td>
+        </tr>
+    `;
 
-            console.log("SIM", field);
+}
+
+document.getElementById("form-user-create").addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    fields.forEach(function(field, index){
+
+        if (field.name === "gender") {
+
+            if (field.checked) {
+                user[field.name] = field.value
+            }
+
         } else {
-            console.log("NÃO");
+
+            user[field.name] = field.value
+
         }
 
-    }
-    // console.log(field.id, field.name, field.value, field.checked, index);
-});  // Pegar um ou mais de um atributos de forma mais simplificada
+    });
 
-// = atribuição (primeiro valor recebe valor do segundo) 10 = 10
-// == comparação de valor 10 == 10
-// === comparação valor e tipo (pergunta se é idêntico) 10 === "10" também atribuído para true e false
+    var objectUser = new User(
+        user.name, 
+        user.gender, 
+        user.birth, 
+        user.country, 
+        user.email, 
+        user.password, 
+        user.photo, 
+        user.admin
+    );
+    
+    addLine(objectUser);
 
-
-// Trabalhando com JSON: Padrão de notificação JS baseado em chave e valor 
-var data = {name: "Maia", email: "vanessamaia02@outlook.com", year: 2003}
+});
